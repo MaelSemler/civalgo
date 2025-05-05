@@ -1,7 +1,14 @@
 import express from 'express';
 import sequelize from "./config/database";
+import {UserRouter} from "./routers/user.router";
+import {CheckInOutHistoryRouter} from "./routers/check_in_out_history.router";
+import {OnSiteWorkersRouter} from "./routers/on_site_workers.routers";
 
 const app = express();
+
+app.use(UserRouter);
+app.use(CheckInOutHistoryRouter);
+app.use(OnSiteWorkersRouter);
 
 sequelize.authenticate()
     .then(() => {

@@ -1,6 +1,6 @@
 import {NextFunction, Request, Response} from 'express';
 
-const checkAuth = (req: Request, res: Response, next: NextFunction) => {
+const checkAuthentication = (req: Request, res: Response, next: NextFunction) => {
     const bearerHeader = req.headers['authorization'];
     if (bearerHeader) {
         next();
@@ -15,4 +15,14 @@ const checkAuth = (req: Request, res: Response, next: NextFunction) => {
     }
 };
 
-export default {checkAuthFirebase: checkAuth,};
+const checkSupervisorAuthentication = (req: Request, res: Response, next: NextFunction) => {
+    const bearerHeader = req.headers['authorization'];
+    if (bearerHeader && bearerHeader == 'supervisor') {
+        next();
+    } else {
+        // Unauthorized
+        return res.sendStatus(401);
+    }
+};
+
+export default {checkAuthentication, checkSupervisorAuthentication};
