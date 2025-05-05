@@ -1,38 +1,70 @@
 "use client"; // Mark as client component
 
-import React from "react";
-import {Button, Paper, TextField} from "@mui/material";
-import { useRouter } from "next/navigation";
+import React, {useState} from "react";
+import {Alert, Button, Paper, Snackbar, TextField} from "@mui/material";
+import axios from "axios";
 
 
 const CheckInForm = () => {
-    const router = useRouter();
+    const [name, setName] = useState("");
+    const [siteId, setSiteId] = useState("");
+    const [feedback, setFeedback] = useState<{ type: "success" | "error"; message: string } | null>(null);
+
+    const handleSubmit = async () => {
+        try {
+            console.log("123")
+            const res = await axios.post("http://localhost:8000/checkIn", {name, siteId});
+            setFeedback({type: "success", message: "Check-in successful!"});
+            // optionally, navigate or clear form here
+        } catch (err: any) {
+            console.error(err);
+            setFeedback({type: "error", message: err.response?.data?.message || "Check-in failed"});
+        }
+    };
 
     return (
-        <Paper elevation={5} style={{padding: '1rem', margin: '1rem', borderRadius: '20px',}}>
-            <TextField
-                label="Name"
-                variant="outlined"
-                fullWidth
-                style={{marginBottom: "1rem"}}
-            />
-            <TextField
-                label="Site ID"
-                variant="outlined"
-                fullWidth
-                style={{marginBottom: "1rem"}}
-            />
-            <Button
-                variant="contained"
-                fullWidth
-                style={{padding: "1rem", borderRadius: 10}}
-                onClick={() => {
-                    router.push('/dashboard');
-                }}
+        <div>
+            <Paper elevation={5} style={{padding: '1rem', margin: '1rem', borderRadius: '20px',}}>
+                <TextField
+                    label="Name"
+                    variant="outlined"
+                    fullWidth
+                    onChange={e => setName(e.target.value)}
+                    style={{marginBottom: "1rem"}}
+                />
+                <TextField
+                    label="Site ID"
+                    variant="outlined"
+                    fullWidth
+                    onChange={e => setSiteId(e.target.value)}
+                    style={{marginBottom: "1rem"}}
+                />
+                <Button
+                    variant="contained"
+                    fullWidth
+                    style={{padding: "1rem", borderRadius: 10}}
+                    onClick={handleSubmit}
+                >
+                    Check-In
+                </Button>
+            </Paper>
+            <Snackbar
+                open={!!feedback}
+                autoHideDuration={3000}
+                onClose={() => setFeedback(null)}
+                anchorOrigin={{vertical: "bottom", horizontal: "center"}}
             >
-                Check-In
-            </Button>
-        </Paper>
+                {feedback ? (
+                    <Alert
+                        onClose={() => setFeedback(null)}
+                        severity={feedback.type}
+                        sx={{width: "100%"}}
+                    >
+                        {feedback.message}
+                    </Alert>
+                ) : <div/>}
+            </Snackbar>
+        </div>
     );
 };
 

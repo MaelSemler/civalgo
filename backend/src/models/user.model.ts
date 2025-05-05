@@ -11,7 +11,7 @@ const User = sequelize.define('User', {
         type: DataTypes.STRING(100),
         allowNull: false,
     },
-    site_id: {
+    siteId: {
         type: DataTypes.INTEGER,
         allowNull: false,
     },
