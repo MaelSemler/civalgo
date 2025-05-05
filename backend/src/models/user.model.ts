@@ -9,11 +9,9 @@ const User = sequelize.define('User', {
     },
     name: {
         type: DataTypes.STRING(100),
-        allowNull: false,
     },
     siteId: {
         type: DataTypes.INTEGER,
-        allowNull: false,
     },
     role: {
         type: DataTypes.ENUM('worker', 'supervisor'),
