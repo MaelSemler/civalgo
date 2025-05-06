@@ -1,13 +1,12 @@
 import {Request, Response} from "express";
+import CheckInOutHistory from "../models/check_in_out_history.model";
 
 class CheckInOutHistoryController {
     checkInOutEvents = async (req: Request, res: Response): Promise<Response> => {
         try {
-            // TODO add the user to on site workers table with current timestamp
-            // TODO add the user to historic table that he checked in
+            const checkInOutHistory = await CheckInOutHistory.findAll();
 
-
-            return res.status(200).json({message: 'User has checked in'});
+            return res.status(200).json({checkInOutHistory: checkInOutHistory});
         } catch (error) {
             return res.status(500).json({message: 'An unexpected error happened'});
         }

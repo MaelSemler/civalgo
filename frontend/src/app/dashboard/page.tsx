@@ -1,5 +1,6 @@
-import {Box, Drawer, List, ListItem, ListItemButton, ListItemText, Toolbar,} from "@mui/material";
+import {Box, Drawer, Grid, List, ListItem, ListItemButton, ListItemText, Toolbar,} from "@mui/material";
 import OnSiteWorkers from "@/app/dashboard/on_site_workers";
+import EventHistoryTable from "@/app/dashboard/event_history_table";
 
 const drawerWidth = 240;
 
@@ -33,7 +34,17 @@ export default function Dashboard() {
                 component="main"
                 sx={{flexGrow: 1, bgcolor: 'background.default', p: 3}}
             >
-                <OnSiteWorkers></OnSiteWorkers>
+                <Grid
+                    container
+                    alignItems="center"
+                    justifyContent="center"
+                    direction="row"
+                    sx={{ height: "100vh" }}
+                    spacing={3}
+                >
+                    <EventHistoryTable></EventHistoryTable>
+                    <OnSiteWorkers></OnSiteWorkers>
+                </Grid>
             </Box>
         </Box>
     );
