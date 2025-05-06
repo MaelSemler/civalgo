@@ -1,4 +1,4 @@
-"use client"; // Mark as client component
+"use client";
 
 import React, {useEffect, useRef, useState} from "react";
 import {List, Paper, Typography,} from "@mui/material";

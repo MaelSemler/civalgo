@@ -15,10 +15,16 @@ const CheckInForm = () => {
 
     const handleSubmit = async () => {
         try {
-            console.log("123")
             const res = await axios.post("http://localhost:8000/checkIn", {name, siteId});
-            setFeedback({type: "success", message: "Check-in successful!"});
-            router.push('/dashboard');
+
+            if (res.status === 201 && res.data?.user?.id) {
+                const userId = res.data.user.id;
+                localStorage.setItem('userId', userId);
+                setFeedback({type: "success", message: "Check-in successful!"});
+                router.push('/dashboard');
+            } else {
+                setFeedback({type: "error", message: "Check-in failed"});
+            }
         } catch (err: any) {
             console.error(err);
             setFeedback({type: "error", message: err.response?.data?.message || "Check-in failed"});

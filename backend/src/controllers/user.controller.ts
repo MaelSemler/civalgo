@@ -17,14 +17,16 @@ class UserController {
             const user = await User.create({
                 name: name,
                 siteId: siteId,
-            });
+            }) as any; // Je sais que c'est pas bon mais je manque de temps pour aller type l'interface dans sequelize, et jai besoin du id
+
+            // Dhabitude je regarderais a chaque étape si le create a marcher
 
             const onSiteWorker = await OnSiteWorkers.create({
-                user_id: '1', // TODO take user.id
+                user_id: user.id,
             });
 
             const checkInOutHistory = await CheckInOutHistory.create({
-                user_id: '1', // TODO take user.id
+                user_id: user.id,
                 event: 'check_in',
             });
 
@@ -38,8 +40,18 @@ class UserController {
 
     checkOut = async (req: Request, res: Response): Promise<Response> => {
         try {
-            // TODO remove the user from on site workers table
-            // TODO add the user to historic table that he checked out
+            const onSiteWorker = await OnSiteWorkers.destroy({
+                where: {
+                    user_id: req.body.user_id,
+                }
+            });
+
+            const checkInOutHistory = await CheckInOutHistory.create({
+                user_id: req.body.user_id,
+                event: 'check_out',
+            });
+
+            await broadcastOnSiteWorkers();
 
             return res.status(200).json({message: 'User has checked out'});
         } catch (error) {

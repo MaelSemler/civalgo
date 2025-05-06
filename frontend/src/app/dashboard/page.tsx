@@ -1,6 +1,8 @@
 import {Box, Drawer, Grid, List, ListItem, ListItemButton, ListItemText, Toolbar,} from "@mui/material";
 import OnSiteWorkers from "@/app/dashboard/on_site_workers";
 import EventHistoryTable from "@/app/dashboard/event_history_table";
+import React from "react";
+import CheckOutButton from "@/app/dashboard/check_out_button";
 
 const drawerWidth = 240;
 
@@ -29,6 +31,7 @@ export default function Dashboard() {
                         </ListItem>
                     ))}
                 </List>
+                <CheckOutButton></CheckOutButton>
             </Drawer>
             <Box
                 component="main"
@@ -39,7 +42,7 @@ export default function Dashboard() {
                     alignItems="center"
                     justifyContent="center"
                     direction="row"
-                    sx={{ height: "100vh" }}
+                    sx={{height: "100vh"}}
                     spacing={3}
                 >
                     <EventHistoryTable></EventHistoryTable>
