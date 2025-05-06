@@ -1,14 +1,13 @@
 import {Request, Response} from "express";
 import User from "../models/user.model";
+import {broadcastOnSiteWorkers} from "./on_site_workers.controller";
+import OnSiteWorkers from "../models/on_site_workers.model";
+import CheckInOutHistory from "../models/check_in_out_history.model";
 
 
 class UserController {
     checkIn = async (req: Request, res: Response): Promise<Response> => {
         try {
-            // TODO add the user to on site workers table with current timestamp
-            // TODO add the user to historic table that he checked in
-
-            console.log(req.body)
             const {name, siteId} = req.body;
 
             if (!name || !siteId) {
@@ -19,6 +18,17 @@ class UserController {
                 name: name,
                 siteId: siteId,
             });
+
+            const onSiteWorker = await OnSiteWorkers.create({
+                user_id: '1', // TODO take user.id
+            });
+
+            const checkInOutHistory = await CheckInOutHistory.create({
+                user_id: '1', // TODO take user.id
+                event: 'check_in',
+            });
+
+            await broadcastOnSiteWorkers();
             return res.status(201).json({message: 'User has checked in', user: user});
         } catch (error) {
             console.log(error)

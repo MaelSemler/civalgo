@@ -1,4 +1,4 @@
-import { DataTypes } from 'sequelize';
+import {DataTypes} from 'sequelize';
 import sequelize from '../config/database';
 
 const OnSiteWorkers = sequelize.define('OnSiteWorkers', {
@@ -10,13 +10,15 @@ const OnSiteWorkers = sequelize.define('OnSiteWorkers', {
     user_id: {
         type: DataTypes.INTEGER,
         allowNull: false,
-        references: {
-            model: 'User',
-            key: 'id'
-        },
+        // Would add the references here but no time to create all the relations
+        // references: {
+        //     model: 'User',
+        //     key: 'id'
+        // },
     },
 }, {
     timestamps: true,
 });
+
 
 export default OnSiteWorkers;

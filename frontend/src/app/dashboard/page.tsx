@@ -1,28 +1,11 @@
-import {
-    AppBar,
-    Box,
-    Drawer,
-    List, ListItem,
-    ListItemButton, ListItemText,
-    Toolbar,
-    Typography
-} from "@mui/material";
+import {Box, Drawer, List, ListItem, ListItemButton, ListItemText, Toolbar,} from "@mui/material";
+import OnSiteWorkers from "@/app/dashboard/on_site_workers";
 
 const drawerWidth = 240;
 
 export default function Dashboard() {
     return (
         <Box sx={{display: 'flex'}}>
-            <AppBar
-                position="fixed"
-                sx={{width: '100%'}}
-            >
-                <Toolbar>
-                    <Typography variant="h6" noWrap component="div">
-                        Dashboard
-                    </Typography>
-                </Toolbar>
-            </AppBar>
             <Drawer
                 sx={{
                     width: drawerWidth,
@@ -50,11 +33,7 @@ export default function Dashboard() {
                 component="main"
                 sx={{flexGrow: 1, bgcolor: 'background.default', p: 3}}
             >
-                <Typography sx={{marginBottom: 2}}>
-                </Typography>
-                <Typography sx={{marginBottom: 2}}>
-
-                </Typography>
+                <OnSiteWorkers></OnSiteWorkers>
             </Box>
         </Box>
     );

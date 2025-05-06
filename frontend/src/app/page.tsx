@@ -1,5 +1,5 @@
 import styles from "./page.module.css";
-import CheckInForm from "@/components/check_in_from";
+import CheckInForm from "@/components/check_in_form";
 import {Grid, Typography} from "@mui/material"; // Ensure to style properly
 
 export default function Home() {

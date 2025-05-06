@@ -3,9 +3,12 @@
 import React, {useState} from "react";
 import {Alert, Button, Paper, Snackbar, TextField} from "@mui/material";
 import axios from "axios";
+import {useRouter} from "next/navigation";
 
 
 const CheckInForm = () => {
+    const router = useRouter();
+
     const [name, setName] = useState("");
     const [siteId, setSiteId] = useState("");
     const [feedback, setFeedback] = useState<{ type: "success" | "error"; message: string } | null>(null);
@@ -15,7 +18,7 @@ const CheckInForm = () => {
             console.log("123")
             const res = await axios.post("http://localhost:8000/checkIn", {name, siteId});
             setFeedback({type: "success", message: "Check-in successful!"});
-            // optionally, navigate or clear form here
+            router.push('/dashboard');
         } catch (err: any) {
             console.error(err);
             setFeedback({type: "error", message: err.response?.data?.message || "Check-in failed"});

@@ -1,4 +1,7 @@
 import {NextFunction, Request, Response} from 'express';
+import {IncomingMessage} from 'http';
+import {WebSocket} from "ws";
+import * as url from "node:url";
 
 const checkAuthentication = (req: Request, res: Response, next: NextFunction) => {
     const bearerHeader = req.headers['authorization'];
@@ -15,14 +18,16 @@ const checkAuthentication = (req: Request, res: Response, next: NextFunction) =>
     }
 };
 
-const checkSupervisorAuthentication = (req: Request, res: Response, next: NextFunction) => {
-    const bearerHeader = req.headers['authorization'];
-    if (bearerHeader && bearerHeader == 'supervisor') {
-        next();
+function checkSupervisorWebsocketAuth(ws: WebSocket, req: IncomingMessage): boolean {
+    const parsedUrl = url.parse(req.url || '', true);
+    const auth = parsedUrl.query['authorization'];
+    if (auth === 'supervisor') {
+        return true;
     } else {
-        // Unauthorized
-        return res.sendStatus(401);
+        ws.send('Unauthorized');
+        ws.close(1008, 'Unauthorized');
+        return false;
     }
-};
+}
 
-export default {checkAuthentication, checkSupervisorAuthentication};
+export default {checkAuthentication, checkSupervisorWebsocketAuth};

@@ -1,15 +1,31 @@
-import {Request, Response} from "express";
+import {IncomingMessage} from "http";
+import {WebSocket} from "ws";
+import OnSiteWorkers from "../models/on_site_workers.model";
+import {clients} from "../app";
 
 
 class OnSiteWorkersController {
-    onSiteWorkers = async (req: Request, res: Response): Promise<Response> => {
-        try {
-            // TODO fetch current workers
 
+    // Is called when a new connection is made in the websocket
+    onSiteWorkers = async (ws: WebSocket, req: IncomingMessage)=> {
+        ws.send('Connected to onSiteWorkers');
 
-            return res.status(200).json({message: 'User has checked in'});
-        } catch (error) {
-            return res.status(500).json({message: 'An unexpected error happened'});
+        broadcastOnSiteWorkers();
+
+        ws.on('close', () => {
+            clients.delete(ws);
+        });
+    }
+}
+
+ // Send the data to all the connections to the websocket, find all OnSiteWorkers
+ export async function broadcastOnSiteWorkers() {
+    const onSiteWorkers = await OnSiteWorkers.findAll();
+    const message = JSON.stringify({ onSiteWorkers });
+
+    for (const client of clients) {
+        if (client.readyState === client.OPEN) {
+            client.send(message);
         }
     }
 }
