@@ -1,4 +1,4 @@
-# civalgo
+# Civalgo
 Projet full stack pour l’entrevue chez Civalgo
 
 ## Comment exécuter le projet
